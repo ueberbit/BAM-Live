@@ -1,0 +1,3 @@
+[submodule "lib/connect"]
+	path = lib/connect
+	url = https://github.com/senchalabs/connect.git
