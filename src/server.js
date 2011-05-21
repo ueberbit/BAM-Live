@@ -12,6 +12,14 @@ function app(app) {
 
 	app.put('/api/:method', function (req, res, next) {
 	});
+
+	app.get('/js/config.js', function (req, res, next) {
+		res.writeHead(200);
+		res.write(JSON.stringify({
+			debug: CONFIG.debug
+		}));
+		res.end();
+	});
 };
 
 connect.createServer(
