@@ -6,11 +6,42 @@ var connect = require('../lib/connect/lib/connect.js');
 
 var CONFIG = require('../config.js').config;
 
+var listeners = [];
+
+var broadcast = function (message) {
+	for (var i in listeners) {
+		if (!listeners.hasOwnProperty(i)) {
+			continue;
+		}
+		var listener = listeners[i];
+		var json = JSON.stringify(message) + "\n\n";
+		listener.res.write(json);
+	}
+};
+
 function app(app) {
 	app.get('/api/:method', function (req, res, next) {
 	});
 
 	app.put('/api/:method', function (req, res, next) {
+	});
+
+	app.get('/events/stream', function (req, res, next) {
+		listeners.push({
+			joined: new Date(),
+			stream: true,
+			req: req,
+			res: res
+		});
+	});
+
+	app.post('/events', function (req, res, next) {
+		res.writeHead(200);
+		res.end();
+		broadcast({
+			type: 'ping',
+			timestamp: (new Date()).getTime() / 1000
+		});
 	});
 
 	app.get('/js/config.js', function (req, res, next) {
