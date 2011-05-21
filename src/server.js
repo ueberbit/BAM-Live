@@ -4,6 +4,7 @@
 
 var connect = require('../lib/connect/lib/connect.js');
 
+var CONFIG = require('../config.js').config;
 
 function app(app) {
 	app.get('/api/:method', function (req, res, next) {
