@@ -4,19 +4,12 @@
 
 var connect = require('../lib/connect/lib/connect.js');
 
+
 function app(app) {
-	app.get('/foo', function (req, res, next) {
-		var body = 'Hello World';
-	 	res.setHeader('Content-Length', body.length);
-  		res.end(body);
+	app.get('/api/:method', function (req, res, next) {
 	});
 
-	app.get('/user/:id', function (req, res, next) {
-		// populates req.params.id
-	});
-
-	app.put('/user/:id', function (req, res, next) {
-		// populates req.params.id
+	app.put('/api/:method', function (req, res, next) {
 	});
 };
 
