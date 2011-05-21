@@ -25,4 +25,4 @@ connect.createServer(
 	connect.bodyParser(),
 	connect.router(app),
 	connect.errorHandler({ showStack: true, showMessage: true, dumpExceptions: true })
-).listen(3000);
+).listen(CONFIG.port);
