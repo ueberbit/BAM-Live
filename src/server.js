@@ -26,6 +26,7 @@ connect.createServer(
 		  , color = colors[res.statusCode] || 32;
 		return format('\033[90m:method :url \033[0m\033[' + color + 'm:status\033[0m');
     }),
+	connect.static(__dirname + '/../pub', { maxAge: 0 }),
 	connect.bodyParser(),
 	connect.router(app),
 	connect.errorHandler({ showStack: true, showMessage: true, dumpExceptions: true })
