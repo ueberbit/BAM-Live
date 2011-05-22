@@ -57,10 +57,9 @@ function app(app) {
 
 	app.get('/js/config.js', function (req, res, next) {
 		res.writeHead(200);
-		res.write("BAMLive.set(" + JSON.stringify({
+		res.end("BAMLive.set(" + JSON.stringify({
 			debug: CONFIG.debug
 		}) + ");");
-		res.end();
 	});
 };
 
