@@ -2,7 +2,7 @@
  * Module dependencies.
  */
 
-var connect = require('../lib/connect/lib/connect.js');
+var connect = require('../lib/connect');
 
 var CONFIG = require('../config.js').config;
 
