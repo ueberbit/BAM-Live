@@ -24,17 +24,18 @@ var broadcast = function (message) {
 function app(app) {
 	app.get('/api/:method', function (req, res, next) {
 		var query = url.parse(req.url).query || '';
-		restler.get(CONFIG.core + '/api/' + req.params.method + '?' + query).on('complete', function(data, _res) {
-			res.writeHead(_res.statusCode);
+		restler.get(CONFIG.core + '/api/' + req.params.method + '?' + query, { parser: null }).on('complete', function(data, _res) {
+			res.writeHead(_res.statusCode, _res.headers);
 			res.end(data);
-		})
+		}).on('error', function () {});
 	});
 
 	app.post('/api/:method', function (req, res, next) {
 		var data = req.body || '';
-		restler.post(CONFIG.core + '/api/' + req.params.method, { data: data }).on('complete', function(data, _res) {
-			res.writeHead(_res.statusCode);
+		restler.post(CONFIG.core + '/api/' + req.params.method, { data: data, parser: null }).on('complete', function(data, _res) {
+			res.writeHead(_res.statusCode, _res.headers);
 			res.end(data);
+		}).on('error', function () {});
 	});
 
 	app.get('/events/stream', function (req, res, next) {
