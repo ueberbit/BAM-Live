@@ -2,7 +2,9 @@
  * Module dependencies.
  */
 
+var url = require('url');
 var connect = require('../lib/connect');
+var restler = require('../lib/restler');
 
 var CONFIG = require('../config.js').config;
 
@@ -21,9 +23,18 @@ var broadcast = function (message) {
 
 function app(app) {
 	app.get('/api/:method', function (req, res, next) {
+		var query = url.parse(req.url).query || '';
+		restler.get(CONFIG.core + '/api/' + req.params.method + '?' + query).on('complete', function(data, _res) {
+			res.writeHead(_res.statusCode);
+			res.end(data);
+		})
 	});
 
-	app.put('/api/:method', function (req, res, next) {
+	app.post('/api/:method', function (req, res, next) {
+		var data = req.body || '';
+		restler.post(CONFIG.core + '/api/' + req.params.method, { data: data }).on('complete', function(data, _res) {
+			res.writeHead(_res.statusCode);
+			res.end(data);
 	});
 
 	app.get('/events/stream', function (req, res, next) {
