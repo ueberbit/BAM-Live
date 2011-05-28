@@ -51,6 +51,26 @@ BAMLive = (function () {
 		// TODO: Check credentials before saving them.
 		$.jStorage.set('credentials', { user: user, pass: pass });
 	};
+	var sign = function (data) {
+		var creds = $.jStorage.get('credentials');
+		data.user = creds.user;
+		data.timestamp = Math.floor(new Date().getTime() / 1000);
+		data.salt = Math.floor(Math.random() * 1000000);
+		var keys = [];
+		$.each(data, function (key, val) {
+			keys.push(key);
+		});
+		keys.sort();
+		var parts = [];
+		$.each(keys, function (idx, key) {
+			parts.push(key + '=' + encodeURIComponent(data[key]).replace(/%20/, '+'));
+		});
+		var hashstr = parts.join('&') + '#' + creds.pass;
+		var hash = $.sha256(hashstr);
+		data.hash = hash;
+		dbg('Signed', data, 'using hashstring', hashstr);
+		return data;
+	};
 	return {
 		dbg: dbg,
 		dumpConfig: dumpConfig,
@@ -59,7 +79,8 @@ BAMLive = (function () {
 		mode: mode,
 		renderLogin: renderLogin,
 		set: set,
-		setCredentials: setCredentials
+		setCredentials: setCredentials,
+		sign: sign
 	};
 })();
 
