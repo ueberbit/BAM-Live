@@ -6,17 +6,18 @@ BAMLive = (function () {
 		dataType: 'json'
 	};
 	var ajax = function (url, opts) {
+		var useopts = $.extend({}, opts);
 		$.each(AJAXDEFAULTS, function (key, val) {
-			if (!opts.hasOwnProperty(key)) {
-				opts[key] = val;
+			if (!useopts.hasOwnProperty(key)) {
+				useopts[key] = val;
 			}
 		});
-		var signparams = [opts.data];
-		if (opts.credentials) {
-			signparams.push(opts.credentials);
+		var signparams = [useopts.data];
+		if (useopts.credentials) {
+			signparams.push(useopts.credentials);
 		}
-		opts.data = sign.apply(sign, signparams);
-		$.ajax('api/' + url, opts);
+		useopts.data = sign.apply(sign, signparams);
+		$.ajax('api/' + url, useopts);
 	};
 	var dbg = function () {
 		if (CONFIG.debug) {
