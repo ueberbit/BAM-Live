@@ -14,14 +14,15 @@ BAMLive = (function () {
 		});
 		var signparams = [useopts.data];
 		if (useopts.credentials) {
-			signparams.push(useopts.credentials);
+			useopts.data = sign(useopts.data, useopts.credentials);
+		} else {
+			useopts.data = sign(useopts.data);
 		}
-		useopts.data = sign.apply(sign, signparams);
 		$.ajax('api/' + url, useopts);
 	};
 	var dbg = function () {
 		if (CONFIG.debug) {
-			log.apply(log, arguments);
+			log(Array.prototype.slice.call(arguments));
 		}
 	};
 	var dumpConfig = function () {
