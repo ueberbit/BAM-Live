@@ -15,6 +15,12 @@
 <div id="game"></div>
 <div id="menu"></div>
 
+<script id="tplPlayers" type="text/html">
+	<ul>{{#players}}
+		<li data-id="{{id}}">{{firstName}}</li>
+	{{/players}}</ul>
+</script>
+
 <script src="js/jquery-1.6.1.min.js"></script>
 <script src="js/ICanHaz.min.js"></script>
 <script src="js/BAMLive.js"></script>
