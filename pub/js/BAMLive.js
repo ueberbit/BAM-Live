@@ -75,6 +75,7 @@ BAMLive = (function () {
 			success: function () {
 				if ($.jStorage.set('credentials', creds)) {
 					dbg('Stored new credentials:', [user, pass]);
+					mode('login');
 				}
 			}
 		});
