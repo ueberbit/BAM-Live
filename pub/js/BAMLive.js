@@ -32,7 +32,7 @@ BAMLive = (function () {
 		return $.jStorage.get('credentials');
 	};
 	var log = function () {
-		if (console && console.log) {
+		if (typeof console !== 'undefined' && console.log) {
 			console.log(Array.prototype.slice.call(arguments));
 		}
 	};
