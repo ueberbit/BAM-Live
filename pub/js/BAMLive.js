@@ -11,7 +11,11 @@ BAMLive = (function () {
 				opts[key] = val;
 			}
 		});
-		opts.data = sign(opts.data);
+		var signparams = [opts.data];
+		if (opts.credentials) {
+			signparams.push(opts.credentials);
+		}
+		opts.data = sign.apply(sign, signparams);
 		$.ajax('api/' + url, opts);
 	};
 	var dbg = function () {
@@ -67,8 +71,8 @@ BAMLive = (function () {
 		// TODO: Check credentials before saving them.
 		$.jStorage.set('credentials', { user: user, pass: pass });
 	};
-	var sign = function (data) {
-		var creds = $.jStorage.get('credentials');
+	var sign = function (data, cred_override) {
+		var creds = cred_override || $.jStorage.get('credentials');
 		data.user = creds.user;
 		data.timestamp = Math.floor(new Date().getTime() / 1000);
 		data.salt = Math.floor(Math.random() * 1000000);
