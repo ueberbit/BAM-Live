@@ -79,8 +79,9 @@ BAMLive = (function () {
 			}
 		});
 	};
-	var sign = function (data, cred_override) {
+	var sign = function (orig_data, cred_override) {
 		var creds = cred_override || $.jStorage.get('credentials');
+		var data = $.extend({}, orig_data);
 		data.user = creds.user;
 		data.timestamp = Math.floor(new Date().getTime() / 1000);
 		data.salt = Math.floor(Math.random() * 1000000);
