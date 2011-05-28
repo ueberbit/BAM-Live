@@ -47,9 +47,9 @@ BAMLive = (function () {
 			}
 		}
 	};
-	var setCredentials = function (name, pass) {
+	var setCredentials = function (user, pass) {
 		// TODO: Check credentials before saving them.
-		$.jStorage.set('credentials', { name: name, pass: pass });
+		$.jStorage.set('credentials', { user: user, pass: pass });
 	};
 	return {
 		dbg: dbg,
@@ -65,7 +65,7 @@ BAMLive = (function () {
 
 $(function () {
 	$('#associate form').submit(function (ev) {
-		BAMLive.setCredentials($('#deviceName').val(), $('#devicePass').val());
+		BAMLive.setCredentials($('#deviceUser').val(), $('#devicePass').val());
 		return false;
 	});
 	BAMLive.mode(BAMLive.haveCredentials() ? 'login' : 'associate');
