@@ -8,6 +8,9 @@ BAMLive = (function () {
 	var dumpConfig = function () {
 		log(CONFIG);
 	};
+	var haveCredentials = function () {
+		return $.jStorage.get('credentials');
+	};
 	var log = function () {
 		if (console && console.log) {
 			console.log.apply(console.log, arguments);
@@ -15,7 +18,9 @@ BAMLive = (function () {
 	};
 	var mode = function (mode) {
 		var show = null;
-		if (mode == 'login') {
+		if (mode == 'associate') {
+			show = $('#associate');
+		} else if (mode == 'login') {
 			renderLogin();
 			show = $('#login');
 		}
@@ -42,16 +47,26 @@ BAMLive = (function () {
 			}
 		}
 	};
+	var setCredentials = function (name, pass) {
+		// TODO: Check credentials before saving them.
+		$.jStorage.set('credentials', { name: name, pass: pass });
+	};
 	return {
 		dbg: dbg,
 		dumpConfig: dumpConfig,
+		haveCredentials: haveCredentials,
 		log: log,
 		mode: mode,
 		renderLogin: renderLogin,
-		set: set
+		set: set,
+		setCredentials: setCredentials
 	};
 })();
 
 $(function () {
-	BAMLive.mode('login');
+	$('#associate form').submit(function (ev) {
+		BAMLive.setCredentials($('#deviceName').val(), $('#devicePass').val());
+		return false;
+	});
+	BAMLive.mode(BAMLive.haveCredentials() ? 'login' : 'associate');
 });
