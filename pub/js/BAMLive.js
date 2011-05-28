@@ -13,6 +13,15 @@ BAMLive = (function () {
 			console.log.apply(console.log, arguments);
 		}
 	};
+	var mode = function (mode) {
+		var show = null;
+		if (mode == 'login') {
+			renderLogin();
+			show = $('#login');
+		}
+		$('.panel').addClass('hidden');
+		show.removeClass('hidden');
+	};
 	var renderLogin = function () {
 		// Retrieve player list.
 		$.getJSON('api/players', function (data) {
@@ -37,11 +46,12 @@ BAMLive = (function () {
 		dbg: dbg,
 		dumpConfig: dumpConfig,
 		log: log,
+		mode: mode,
 		renderLogin: renderLogin,
 		set: set
 	};
 })();
 
 $(function () {
-	BAMLive.renderLogin();
+	BAMLive.mode('login');
 });
