@@ -1,5 +1,19 @@
 BAMLive = (function () {
 	var CONFIG = {};
+	var AJAXDEFAULTS = {
+		cache: false,
+		data: {},
+		dataType: 'json'
+	};
+	var ajax = function (url, opts) {
+		$.each(AJAXDEFAULTS, function (key, val) {
+			if (!opts.hasOwnProperty(key)) {
+				opts[key] = val;
+			}
+		});
+		opts.data = sign(opts.data);
+		$.ajax('api/' + url, opts);
+	};
 	var dbg = function () {
 		if (CONFIG.debug) {
 			log.apply(log, arguments);
@@ -29,15 +43,17 @@ BAMLive = (function () {
 	};
 	var renderLogin = function () {
 		// Retrieve player list.
-		$.getJSON('api/players', function (data) {
-			// Generate HTML.
-			var html = ich.tplPlayers({players: data});
-			// Attach player data to the li elements.
-			$.each(data, function (idx, player) {
-				$('li[data-id="' + player.id + '"]', html).data('player', player);
-			});
-			// Replace #login contents with generated HTML.
-			$('#login').html(html);
+		ajax('players', {
+			success: function (data) {
+				// Generate HTML.
+				var html = ich.tplPlayers({players: data});
+				// Attach player data to the li elements.
+				$.each(data, function (idx, player) {
+					$('li[data-id="' + player.id + '"]', html).data('player', player);
+				});
+				// Replace #login contents with generated HTML.
+				$('#login').html(html);
+			}
 		});
 	};
 	var set = function (options) {
