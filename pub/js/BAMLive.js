@@ -68,8 +68,15 @@ BAMLive = (function () {
 		}
 	};
 	var setCredentials = function (user, pass) {
-		// TODO: Check credentials before saving them.
-		$.jStorage.set('credentials', { user: user, pass: pass });
+		var creds = { user: user, pass: pass };
+		ajax('ping', {
+			credentials: creds,
+			success: function () {
+				if ($.jStorage.set('credentials', creds)) {
+					dbg('Stored new credentials:', [user, pass]);
+				}
+			}
+		});
 	};
 	var sign = function (data, cred_override) {
 		var creds = cred_override || $.jStorage.get('credentials');
