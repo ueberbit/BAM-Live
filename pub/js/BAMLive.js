@@ -32,7 +32,7 @@ BAMLive = (function () {
 	};
 	var log = function () {
 		if (console && console.log) {
-			console.log.apply(console.log, arguments);
+			console.log(Array.prototype.slice.call(arguments));
 		}
 	};
 	var mode = function (mode) {
